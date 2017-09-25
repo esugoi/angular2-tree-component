@@ -1,13 +1,15 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, Input, ViewEncapsulation, TemplateRef } from '@angular/core';
 import { TreeNode } from '../models/tree-node.model';
 
 @Component({
-  selector: 'TreeNodeContent',
-  template: `<span *ngIf="!template">{{ node.displayField }}</span>
-  <template
+  selector: 'tree-node-content',
+  encapsulation: ViewEncapsulation.None,
+  template: `
+  <span *ngIf="!template">{{ node.displayField }}</span>
+  <ng-container
     [ngTemplateOutlet]="template"
     [ngOutletContext]="{ $implicit: node, node: node, index: index }">
-  </template>`,
+  </ng-container>`,
 })
 export class TreeNodeContent {
   @Input() node: TreeNode;

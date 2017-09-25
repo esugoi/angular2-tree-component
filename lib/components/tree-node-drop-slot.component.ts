@@ -1,14 +1,10 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { TreeNode } from '../models/tree-node.model';
-import { TreeDraggedElement } from '../models/tree-dragged-element.model';
 
 @Component({
-  selector: 'TreeNodeDropSlot',
+  selector: 'TreeNodeDropSlot, tree-node-drop-slot',
   encapsulation: ViewEncapsulation.None,
-  styles: [
-    '.node-drop-slot { display: block; height: 2px; width: 100%}',
-    '.node-drop-slot.is-dragging-over { background: #ddffee; height: 20px; border: 2px dotted #888; }'
-  ],
+  styles: [],
   template: `
     <div
       class="node-drop-slot"
@@ -21,9 +17,6 @@ export class TreeNodeDropSlot {
   @Input() node: TreeNode;
   @Input() dropIndex: number;
 
-  constructor() {
-  }
-
   onDrop($event) {
     this.node.mouseAction('drop', $event.event, {
       from: $event.element,
@@ -31,7 +24,7 @@ export class TreeNodeDropSlot {
     });
   }
 
-  allowDrop(element) {
-    return this.node.options.allowDrop(element, { parent: this.node, index: this.dropIndex });
+  allowDrop(element, $event) {
+    return this.node.options.allowDrop(element, { parent: this.node, index: this.dropIndex }, $event);
   }
 }

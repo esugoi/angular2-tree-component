@@ -1,15 +1,15 @@
 export const TREE_EVENTS = {
-  onToggle: 'onToggle',
-  onToggleExpanded: 'onToggleExpanded',
-  onActiveChanged: 'onActiveChanged',
-  onActivate: 'onActivate',
-  onDeactivate: 'onDeactivate',
-  onFocus: 'onFocus',
-  onBlur: 'onBlur',
-  onDoubleClick: 'onDoubleClick',
-  onContextMenu: 'onContextMenu',
-  onInitialized: 'onInitialized',
-  onUpdateData: 'onUpdateData',
-  onMoveNode: 'onMoveNode',
-  onEvent: 'onEvent'
-}
+  toggleExpanded: 'toggleExpanded',
+  activate: 'activate',
+  deactivate: 'deactivate',
+  focus: 'focus',
+  blur: 'blur',
+  initialized: 'initialized',
+  updateData: 'updateData',
+  moveNode: 'moveNode',
+  copyNode: 'copyNode',
+  event: 'event',
+  loadNodeChildren: 'loadNodeChildren',
+  changeFilter: 'changeFilter',
+  stateChange: 'stateChange'
+};

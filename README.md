@@ -1,93 +1,75 @@
-[![npm version](https://badge.fury.io/js/angular2-tree-component.svg)](https://badge.fury.io/js/angular2-tree-component)
-# angular2 tree component
+[![Build Status](https://travis-ci.org/500tech/angular-tree-component.svg?branch=master)](https://travis-ci.org/500tech/angular-tree-component)
+[![npm version](https://badge.fury.io/js/angular-tree-component.svg)](https://badge.fury.io/js/angular-tree-component)
 
-## Call for styles
-Hello users & contributors of the tree.
+# angular tree component
 
-We're looking for nice example themes for the tree.
-If you've made one, and are willing to share, please send your CSS file to adam@500tech.com, and we will display it on the readme page of the tree.
-
-Thanks
-
-## A full featured tree component for Angular 2
+## A full featured tree component for Angular (2 and above, including 4)
 We've built so many projects that required a tree component, and could never find a library that supported all features.
 And building your own tree component is not an easy task.
 
-So, we decided to build one for Angular 2, with all the features you can think of:
+So, we decided to build one for Angular, with all the features you can think of:
 * Simple to use
 * Well Documented
+* Customizable & Extensible (override field names, custom templates, etc...)
 * Keyboard navigation
 * Async data
 * Drag & Drop
 * Select & Multiselect
 * Filtering
-* Customizable (override field names, custom templates, etc...)
+* Virtual Scrolling
+* Save & restore tree state
 * Event callbacks
 * API for accessing & altering the tree state
 * Easily styled (comes with very minimal styling)
 
-If you like this, support the project by starring it!
+## Angular supported version
+angular-tree-component supports angular 2.X.X releases, 4.X.X releases, and AoT compilation.
 
-## Angular 2 supported version
-angular2-tree-component supports angular 2.0.0 release
-
-## Demo & full documentation:
+## Getting started
 Please refer to the full documentation:  
 [https://angular2-tree.readme.io/docs](https://angular2-tree.readme.io/docs)
 
-## Examples
-```
-git clone https://github.com/500tech/angular2-tree-component
-```
+## Demo
+You can find working demos inside the docs:
+[https://angular2-tree.readme.io/docs](https://angular2-tree.readme.io/docs)
 
-### Using the CLI:
+## Call for styles
+Hello users & contributors of the tree.
+
+We're looking for nice example themes for the tree.
+If you've made one, and are willing to share, please open an issue and attach your CSS and image of how it should look.
+
+Thanks
+
+## Example
+To run the example:
 ```
-cd angular2-tree-component/example/cli
+git clone https://github.com/500tech/angular-tree-component
+
+cd angular-tree-component/example/cli
 npm install
 npm install -g angular-cli
 ng serve
 ```
 
-### Using webpack:
-```
-cd angular2-tree-component/example/webpack
-npm install
-npm start
-```
+## SystemJS
+Sorry guys, SystemJS is not supported.
+Modern web applications use bundlers like Webpack.
 
-**There's currently an issue with systemJS and lodash.**  
-Until we solve it, please install lodash into the project:  
-```
-npm install --save lodash
-```
-
-and add these lines to systemjs.config.js:  
-```
-  var map = {
-    'angular2-tree-component':    'node_modules/angular2-tree-component',
-    'lodash':                     'node_modules/lodash',
-  };
-
-  var packages = {
-    'angular2-tree-component'   : { main: 'dist/angular2-tree-component.js', defaultExtension: 'js' },
-    'lodash'                    : { main: 'lodash.js', defaultExtension: 'js' },
-  };
-```
+We've tried to support SystemJS for a year, but it just causes too many issues.
 
 ## What's next
 We would always love to hear suggestions for features & improvements - just open an issue.
 
-Also, if there's anyone who created an awesome theme for angular2-tree-component - please send to adam@500tech.com.
-
 Some things on our mind down the road:
-* virtual scroll
-* context menu
-* save & restore tree state
-* checkbox & master checkbox support
+* Context menu
+* Checkbox & master checkbox support
+* Refactor drag & drop
+* Add more tests
+* Add more examples
 
 ## Contributing
-There are currently no unit tests (yet).
+run `npm run example:cli` and open [localhost:4200](http://localhost:4200) to test your code before submitting a pull request.  
+Windows users - if it doesn't work try `npm run example:cli:win`.  
 
-However, if you wish to contribute code, you can run `npm run example:cli` and open [localhost:4200](http://localhost:4200) to test your code manually before submitting a pull request.
-
-Please email me at adam@500tech.com before starting to work on a feature / bug to make sure it's something that I'm not working on already.
+Please check the issues / project before starting to work on a feature / bug to make sure it's not already in progress.

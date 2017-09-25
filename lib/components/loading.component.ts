@@ -1,11 +1,18 @@
-import { Component, Input, TemplateRef } from '@angular/core'
-import { TreeModel } from '../models/tree.model';
+import { Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { TreeNode } from '../models/tree-node.model';
 
 @Component({
-  selector: 'LoadingComponent',
-  template: `<span *ngIf="!template">loading...</span>
-  <template [ngTemplateOutlet]="template"></template>`,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'tree-loading-component',
+  template: `
+    <span *ngIf="!template">loading...</span>
+    <ng-container
+      [ngTemplateOutlet]="template"
+      [ngOutletContext]="{ $implicit: node }">
+    </ng-container>
+  `,
 })
 export class LoadingComponent {
   @Input() template: TemplateRef<any>;
+  @Input() node: TreeNode;
 }

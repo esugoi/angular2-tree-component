@@ -2,34 +2,36 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { TreeNode } from '../models/tree-node.model';
 
 @Component({
-  selector: 'TreeNodeChildren',
+  selector: 'tree-node-children',
   encapsulation: ViewEncapsulation.None,
-  styles: [
-    '.tree-children.tree-children-no-padding { padding-left: 0 }',
-    '.tree-children { padding-left: 20px }'
-  ],
+  styles: [],
   template: `
-    <div [class.tree-children]="true"
-         [class.tree-children-no-padding]="node.options.levelPadding"
-         *ngIf="node.isExpanded">
-      <div *ngIf="node.children">
-        <TreeNode
-          *ngFor="let node of node.children; let i = index"
+    <ng-container *mobxAutorun>
+      <div [class.tree-children]="true"
+          [class.tree-children-no-padding]="node.options.levelPadding"
+          *treeAnimateOpen="
+            node.isExpanded;
+            speed:node.options.animateExpand;
+            acceleration:node.options.animateAcceleration;
+            enabled:node.options.animateExpand">
+        <tree-node-collection
+          *ngIf="node.children"
+          [nodes]="node.children"
+          [templates]="templates"
+          [treeModel]="node.treeModel">
+        </tree-node-collection>
+        <tree-loading-component
+          [style.padding-left]="node.getNodePadding()"
+          class="tree-node-loading"
+          *ngIf="!node.children"
+          [template]="templates.loadingTemplate"
           [node]="node"
-          [index]="i"
-          [templates]="templates">
-        </TreeNode>
+        ></tree-loading-component>
       </div>
-      <LoadingComponent
-        [style.padding-left]="node.getNodePadding()"
-        class="tree-node-loading"
-        *ngIf="!node.children"
-        [template]="templates.loadingTemplate"
-      ></LoadingComponent>
-    </div>
+    </ng-container>
   `
 })
 export class TreeNodeChildrenComponent {
-  @Input() node:TreeNode;
+  @Input() node: TreeNode;
   @Input() templates: any;
 }

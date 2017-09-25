@@ -1,84 +1,238 @@
 /**
  * Welcome to ng2tree
  */
+export type IDType = string | number;
+export type IDTypeDictionary = { [id: string]: boolean } | { [id: number]: boolean };
 
 export interface IAllowDropFn {
-  (element:any, to:{parent:ITreeNode, index:number}):boolean;
+  (element: any, to: {parent: ITreeNode, index: number}, $event?: any): boolean;
 }
-/**
-* This is the interface of the options input of the tree.
-* See docs for more detailed explanations
-*/
+
+export interface INodeHeightFn {
+  (node: ITreeNode): number;
+}
+
+export interface IAllowDragFn {
+  (node: ITreeNode): boolean;
+}
+
+
+export interface ITreeState {
+  expandedNodeIds?: IDTypeDictionary;
+  activeNodeIds?: IDTypeDictionary;
+  hiddenNodeIds?: IDTypeDictionary;
+  focusedNodeId?: IDType;
+}
+
 export interface ITreeOptions {
    /**
-    * Override children field. Default: 'children'
+    * A string representing the attribute of the node that contains the array of children.
+
+    * **Default value: `children`.**
+
+    For example, if your nodes have a `nodes` attribute, that contains the children, use:
+    ```
+      options = { childrenField: 'nodes' }
+    ```
     */
    childrenField?: string;
    /**
-    * Override display field. Default: 'name'
+    * A string representing the attribute of the node to display.
+
+    * **Default value: `name`**
+
+      For example, if your nodes have a `title` attribute that should be displayed, use:
+      ```
+        options = { displayField: 'title' }
+      ```
     */
    displayField?: string;
    /**
-    * Override id field. Default: 'id'
+    * A string representing the attribute of the node that contains the unique ID.
+      This will be used to construct the `path`, which is an array of IDs that point to the node.
+
+      * **Default value: `id`.**
+
+      For example, if your nodes have a `uuid` attribute, that contains the unique key, use:
+      ```
+        options = { idField: 'uuid' }
+      ```
     */
    idField?: string;
    /**
-    * Override isExpanded field. Default: 'isExpanded'
+    * A string representing the attribute of the node that contains whether the node starts as expanded.
+
+      * **Default value: `isExpanded`.**
+
+      For example, if your nodes have an `expanded` attribute, that contains a boolean value, use:
+      ```
+        options = { isExpandedField: 'expanded' }
+      ```
     */
-   isExpandedField?:string;
+   isExpandedField?: string;
    /**
-    * Override isHidden field. Default: 'isHidden'
+    * Function for loading a node's children.
+      The function receives a TreeNode, and returns a value or a promise that resolves to the node's children.
+
+      This function will be called whenever a node is expanded, the `hasChildren` field is true, and the `children` field is empty.
+      The result will be loaded into the node's children attribute.
+
+      Example:
+      ```
+      * options = {
+      *   getChildren: (node:TreeNode) => {
+      *     return request('/api/children/' + node.id);
+      *   }
+      * }
+      ```
     */
-   isHiddenField?:string;
+   getChildren?: (node: ITreeNode) => any;
    /**
-    * Supply function for getting fields asynchronously. Should return a Promise
-    */
-   getChildren?: (node:ITreeNode) => any;
-   /**
-    * Change the default mouse and key actions on the tree
+    * Rewire which trigger causes which action using this attribute, or create custom actions / event bindings.
+    * See the [Action Mapping Section](https://angular2-tree.readme.io/docs/action-mapping) for more details.
     */
    actionMapping?: any;
    /**
-    * Allow dragging tree nodes. Default: false
+    * Specify if dragging tree nodes is allowed.
+    * This could be a boolean, or a function that receives a TreeNode and returns a boolean
+
+    * **Default value: false**
+
+    Example:
+    ```
+    * options = {
+    *  allowDrag: true
+    * }
+    ```
     */
-   allowDrag?: boolean;
+   allowDrag?: boolean | IAllowDragFn;
    /**
-    * Allow drop on the tree.
-    * Either boolean value, or a function that takes the dragged element and drop location (parent, index)
-    * and returns a boolean value.
-    * Will be called when dragging over the nodes or between nodes, and allow to prevent the drop style
-    * Default: true
-    */
+    * Specify whether dropping inside the tree is allowed. Optional types:
+    *  - boolean
+    *  - (element:any, to:{parent:ITreeNode, index:number}):boolean
+         A function that receives the dragged element, and the drop location (parent node and index inside the parent),
+         and returns true or false.
+
+    * **Default Value: true**
+
+    example:
+    ```
+    * options = {
+    *  allowDrop: (element, {parent, index}) => parent.isLeaf
+    * }
+    ```
+   */
    allowDrop?: boolean | IAllowDropFn;
    /**
-   * Specify padding per node instead of children padding (to allow full row select for example)
+   * Specify padding per node (integer).
+    Each node will have padding-left value of level * levelPadding, instead of using the default padding for children.
+
+    This option is good for example for allowing whole row selection, etc.
+
+    You can alternatively use the tree-node-level-X classes to give padding on a per-level basis.
+
+    * **Default value: 0**
    */
    levelPadding?: number;
    /**
-    * deprecated
+    * Specify a function that returns a class per node. Useful for styling the nodes individually.
+
+      Example:
+      ```
+      * options = {
+      *   nodeClass: (node:TreeNode) => {
+      *     return 'icon-' + node.data.icon;
+      *   }
+      * }
+      ```
     */
-   treeNodeTemplate?: any;
+   nodeClass?: (node: ITreeNode) => string;
    /**
-    * deprecated
+    Boolean flag to use the virtual scroll option.
+
+    To use this option, you must supply the height of the container, and the height of each node in the tree.
+
+    You can also specify height for the dropSlot which is located between nodes.
+
+    * **Default Value: false**
+
+    example:
+    ```
+    * options = {
+    *   useVirtualScroll: true,
+    *   nodeHeight: (node: TreeNode) => node.myHeight,
+    *   dropSlotHeight: 3
+    * }
+    ```
     */
-   loadingComponent?: any;
+   useVirtualScroll?: boolean;
    /**
-    * deprecated
+    * For use with `useVirtualScroll` option.
+    * Specify a height for nodes in pixels. Could be either:
+    * - number
+    * - (node: TreeNode) => number
+
+    * **Default Value: 22**
     */
-   hasCustomContextMenu?: any;
+   nodeHeight?: number | INodeHeightFn;
    /**
-    * deprecated
+    * For use with `useVirtualScroll` option.
+    * Specify a height for drop slots (located between nodes) in pixels
+
+    * **Default Value: 2**
     */
-   context?: any;
+   dropSlotHeight?: number;
    /**
-    * Supply function for getting a custom class for the node component
+    * Boolean whether or not to animate expand / collapse of nodes.
+
+    * **Default Value: false**
     */
-   nodeClass?: (node:ITreeNode) => string;
+   animateExpand?: boolean;
+   /**
+    * Speed of expand animation (described in pixels per 17 ms).
+
+    * **Default Value: 30**
+    */
+   animateSpeed?: number;
+   /**
+    * Increase of expand animation speed (described in multiply per 17 ms).
+
+    * **Default Value: 1.2**
+    */
+   animateAcceleration?: number;
+   /**
+    * Whether to scroll to the node to make it visible when it is selected.
+
+    * **Default Value: true**
+    */
+    scrollOnSelect?: boolean;
+   /**
+    * Function to clone a node.
+    * Receives a TreeNode object, and returns a node object (only the data).
+    * This callback will be called when copying a node inside the tree,
+    * by either calling copyNode, or by dragging and holding the ctrl key
+    *
+    * For example:
+      ```
+        options: ITreeOptions = {
+          getNodeClone: (node) => ({
+            ...node.data,
+            id: uuid.v4(),
+            name: `copy of ${node.data.name}`
+          })
+        };
+      ```
+    *
+    * **Default Value: clone the node using Object.assign, and remove 'id' property**
+    */
+    getNodeClone?: (node: ITreeNode) => any;
+    /**
+     * Makes the tree right-to-left.
+     * This include direction, expander style, and change key binding (right key collapse and left key expands instead of vice-versa)
+     */
+    rtl?: boolean;
  }
 
-/**
- * This is the interface of a single Tree Node
- */
 export interface ITreeNode {
   // properties
   /**
@@ -111,26 +265,24 @@ export interface ITreeNode {
    * Path in the tree: Array of IDs.
    */
   path: string[];
-
+  /**
+   * index of the node inside its parent's children
+   */
+  index: number;
   /**
    * A unique key of this node among its siblings.
    * By default it's the 'id' of the original node, unless stated otherwise in options.idField
    */
-  id: any;
-
-  /**
-   * The context that was given in the options object.
-   */
-  context:any;
+  id: IDType;
 
   // helpers
   isExpanded: boolean;
   isActive: boolean;
-  isFocused:boolean;
-  isCollapsed:boolean;
-  isLeaf:boolean;
-  hasChildren:boolean;
-  isRoot:boolean;
+  isFocused: boolean;
+  isCollapsed: boolean;
+  isLeaf: boolean;
+  hasChildren: boolean;
+  isRoot: boolean;
 
   // traversing
   /**
@@ -169,17 +321,17 @@ export interface ITreeNode {
   /**
    * @returns      true if this node is a descendant of the parameter node
    */
-  isDescendantOf(node:ITreeNode):boolean;
+  isDescendantOf(node: ITreeNode): boolean;
 
   /**
    * @returns      in case levelPadding option is supplied, returns the current node's padding
    */
-  getNodePadding():string;
+  getNodePadding(): string;
 
   /**
    * @returns      in case nodeClass option is supplied, returns the current node's class
    */
-  getClass():string;
+  getClass(): string;
 
   // actions
   /**
@@ -211,6 +363,18 @@ export interface ITreeNode {
    */
   blur();
   /**
+   * Hides the node
+   */
+  hide();
+  /**
+   * Makes the node visible
+   */
+  show();
+  /**
+   * @param value  if true makes the node hidden, otherwise visible
+   */
+  setIsHidden(value: boolean);
+  /**
    * Scroll the screen to make the node visible
    */
   scrollIntoView();
@@ -218,21 +382,38 @@ export interface ITreeNode {
    * Fire an event to the renderer of the tree (if it was registered)
    */
   fireEvent(event: any);
+  /**
+   * Invokes a method for every node under this one - depth first
+   * @param fn  a function that receives the node
+   */
+  doForAll(fn: (node: ITreeNode) => any);
+  /**
+   * expand all nodes under this one
+   */
+  expandAll();
+  /**
+   * collapse all nodes under this one
+   */
+  collapseAll();
+  /**
+   * sets the node to active / inactive according to the value.
+   * If multi is true (default false) - does a multiselect.
+   */
+  setIsActive(value: boolean, multi?: boolean);
+  /**
+   * sets the node to be active and makes sure it's visible by expanding all nodes above it and scrolling it into view.
+   * Very similar to calling `activate`, `ensureVisible` and `scrollIntoView` methods.
+   * If multi is true (default false) - does a multiselect.
+   */
+  setActiveAndVisible(multi: boolean);
 }
 
-/**
- * This is the interface of the TreeModel
- */
 export interface ITreeModel {
   // properties
   /**
    * All root nodes
    */
   roots: ITreeNode[];
-  /**
-   * Current active (selected) node
-   */
-  getActiveNode(): ITreeNode;
   /**
    * Current focused node
    */
@@ -246,16 +427,65 @@ export interface ITreeModel {
    * Is the tree currently focused
    */
   isFocused: boolean;
+  /**
+   * @returns Current active (selected) nodes
+   */
+  activeNodes: ITreeNode[];
+  /**
+   * @returns Current expanded nodes
+   */
+  expandedNodes: ITreeNode[];
 
   // helpers
   /**
+   * @returns Current active (selected) node. If multiple nodes are active - returns the first one.
+   */
+  getActiveNode(): ITreeNode;
+  /**
+   * @returns Current focused node (either hovered or traversed with keys)
+   */
+  getFocusedNode(): ITreeNode;
+  /**
+   * Set focus on a node
+   * @param value  true or false - whether to set focus or blur.
+   */
+  setFocusedNode(node: ITreeNode);
+  /**
+   * @param skipHidden  true or false - whether to skip hidden nodes
    * @returns      first root of the tree
    */
-  getFirstRoot(): ITreeNode;
+  getFirstRoot(skipHidden?: boolean): ITreeNode;
   /**
+   * @param skipHidden  true or false - whether to skip hidden nodes
    * @returns      last root of the tree
    */
-  getLastRoot(): ITreeNode;
+  getLastRoot(skipHidden?: boolean): ITreeNode;
+  /**
+   * @returns      true if the tree is empty
+   */
+  isEmptyTree(): boolean;
+  /**
+   * @returns All root nodes that pass the current filter
+   */
+  getVisibleRoots(): ITreeNode[];
+  /**
+   * @param     path  array of node IDs to be traversed respectively
+   * @param     statrNode  optional. Which node to start traversing from
+   * @returns   The node, if found - null otherwise
+   */
+  getNodeByPath(path: any[], startNode?: ITreeNode): ITreeNode;
+  /**
+   * @param     id  node ID to find
+   * @returns   The node, if found - null otherwise
+   */
+  getNodeById(id: IDType): ITreeNode;
+  /**
+   * @param     predicate - either an object or a function, used as a test condition on all nodes.
+   *            Could be every predicate that's supported by lodash's `find` method
+   * @param     statrNode  optional. Which node to start traversing from
+   * @returns   First node that matches the predicate, if found - null otherwise
+   */
+  getNodeBy(predicate: any, startNode?: ITreeNode): ITreeNode;
 
   // actions
   /**
@@ -287,7 +517,7 @@ export interface ITreeModel {
    *   In case it's a function, it will be passed the node, and should return true if the node should be visible, false otherwise
    * @param autoShow  if true, make sure all nodes that passed the filter are visible
    */
-  filterNodes(filter, autoShow?:boolean);
+  filterNodes(filter, autoShow?: boolean);
   /**
    * Marks all nodes isHidden = false
    */
@@ -297,10 +527,31 @@ export interface ITreeModel {
    * @param location  has a from and a to attributes, each has a node and index attributes.
      The combination of node + index tells which node needs to be moved, and to where
    */
-  moveNode(node:ITreeNode, to:{node:ITreeNode, index:number});
+  moveNode(node: ITreeNode, to: {node: ITreeNode, index: number});
+  /**
+   * Invokes a method for every node of the tree - depth first
+   * @param fn  a function that receives the node
+   */
+  doForAll(fn: (node: ITreeNode) => any);
+  /**
+   * expand all nodes
+   */
+  expandAll();
+  /**
+   * collapse all nodes
+   */
+  collapseAll();
+  /**
+   * get tree state
+   */
+  getState(): ITreeState;
+  /**
+   * set tree state
+   */
+  setState(state: ITreeState);
 
+  subscribeToState(fn: (state: ITreeState) => any);
 }
-
 /**
  * This is the interface of the TreeNodeDrag service
  */
@@ -310,5 +561,5 @@ export interface ITreeNodeDrag {
    * @param node  The parent node of the current dragged node
    * @param index  The index inside parent's children, of the current dragged node
    */
-  getDragNode():{ node: ITreeNode, index:number };
+  getDragNode(): { node: ITreeNode, index: number };
 }

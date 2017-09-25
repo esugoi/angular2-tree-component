@@ -1,3 +1,173 @@
+<a name="5.0.0"></a>
+# 5.0.0 (2017-01-09)
+* Breaking change - Moved styles to external CSS
+* Breaking change - Renamed tree class to angular-tree-component
+* Added rtl option
+
+<a name="4.1.0"></a>
+# 4.1.0 (2017-03-08)
+* Fixed changeFilterr typo
+* Added copyNode on ctrl
+
+<a name="4.0.0"></a>
+# 4.0.0 (2017-29-07)
+* Breaking change - Renamed loadChildren to loadNodeChildren because of AoT
+* Breaking change - removed deprecated event names onXXX
+* Breaking change - removed deprecated component names
+* Fixed bug for Angular Universal
+* added 'drag' action mapping
+
+<a name="3.9.0"></a>
+# 3.9.0 (2017-28-07)
+* Added setHiddenNodeIds
+* Added state 2 way binding
+* Removed isHiddenField
+
+<a name="3.8.0"></a>
+# 3.8.0 (2017-15-07)
+* Added scrollOnFocus
+* Added RTL example
+
+<a name="3.7.3"></a>
+# 3.7.3 (2017-08-06)
+* Prevent overwriting existing node ids to allow use with immutable objects
+* Fix MobX version to support AoT
+
+<a name="3.7.2"></a>
+# 3.7.2 (2017-21-05)
+* Fixed close / open quickly when animating
+
+<a name="3.7.1"></a>
+# 3.7.1 (2017-21-05)
+* Fixed allowDrop
+
+<a name="3.7.0"></a>
+# 3.7.0 (2017-20-05)
+* Firing onInitialized after viewport set
+* Rename events - "onXXX" => "XXX"
+* Added 'dropOnNode' to event when dropping directly on node
+
+<a name="3.6.0"></a>
+# 3.6.0 (2017-10-05)
+* added drag over / leave / enter / end to action mapping
+* added $event to allowDrop function
+* Allow for node ID=0
+
+<a name="3.5.0"></a>
+# 3.5.0 (2017-29-04)
+* doForAll allows promises (supports expandAll of async nodes)
+
+<a name="3.4.1"></a>
+# 3.4.1 (2017-29-04)
+* Fixed SystemJS errors
+
+<a name="3.4.0"></a>
+# 3.4.0 (2017-28-04)
+* Add animations
+* Add node wrapper template
+* Fixed drop slot style
+
+<a name="3.3.1"></a>
+# 3.3.1 (2017-19-04)
+* Support useStrict mode in MobX
+
+<a name="3.3.0"></a>
+# 3.3.0 (2017-17-04)
+* Reduce bundle size
+* Fix tree not rendered when hidden then shown
+* Update to mobx-angular
+
+<a name="3.2.4"></a>
+# 3.2.4 (2017-04-04)
+* Support Angular 4
+* Fixed tree-node and tree-node-level-X classes.
+* Removed redundant div in children
+* Added integration tests
+* Passing node in context to loading template
+* Fixed using treeNodeFullTemplate
+* Added more demos
+* Fixed filtering without virtual scroll option
+* allowDrag allows functions
+* Drag and drop fix for IE9+
+* Fixed doForAll to run recursively
+
+<a name="3.2.3"></a>
+# 3.2.3 (2017-03-08)
+* Fixed bug when actionMapping is undefined
+
+<a name="3.2.2"></a>
+# 3.2.2 (2017-03-08)
+* Include mobx and lodash inside UMD bundle
+
+<a name="3.2.1"></a>
+# 3.2.1 (2017-03-07)
+* Updated api and docs
+* Not showing virtual scroll unless enabled
+* Added treeModel to events
+* Fixed getActiveNodes & getExpandedNodes
+
+<a name="3.2.0"></a>
+# 3.2.0 (2017-03-06)
+* Renamed library to angular-tree-component
+
+<a name="3.1.0"></a>
+# 3.1.0 (2017-02-27)
+* Changed component selectors to kebab-case
+
+<a name="3.0.2"></a>
+# 3.0.2 (2017-02-25)
+* Using ng2-mobx's wrappers for observable and computed for AoT
+
+<a name="3.0.1"></a>
+# 3.0.1 (2017-02-25)
+* Fix lint errors
+* Fix ng2-mobx version
+
+<a name="3.0.0"></a>
+# 3.0.0 (2017-02-25)
+* Virtual Scroll
+* Added onChangeFilter event
+* Added onLoadChildren event
+* Added doForAll method on TreeModel and TreeNode
+* Added expandAll method on TreeModel and TreeNode
+* Added collapseAll method on TreeModel and TreeNode
+* Breaking change - onToggleExpanded is called immediately after expanding node. If there are async children - onLoadChildren will be called after they are loaded.
+* Breaking change - TreeModel filter function autoShow param now defaults to true
+* Breaking change - Removed filter function on TreeNode
+* Breaking change - Removed deprecations:
+    * options.hasCustomContextMenu
+    * options.context
+    * options.loadingComponent
+    * options.treeNodeTemplate
+    * options.actionMapping.mouse.shift
+    * options.actionMapping.mouse.ctrl
+    * options.actionMapping.mouse.alt
+    * TREE_EVENTS.onToggle
+    * TREE_EVENTS.onDoubleClick
+    * TREE_EVENTS.onContextMenu
+
+<a name="2.8.2"></a>
+# 2.8.2 (2017-02-21)
+* Added yarn file
+* Fixed lint errors
+* Not mandatory to supply getChildren method
+* Calling 'closest' using invokeElementMethod
+* Removed onActiveChanged method
+* Added 3rd party licenses
+
+<a name="2.8.1"></a>
+# 2.8.1 (2017-02-09)
+* Added UMD bundle
+
+<a name="2.8.0"></a>
+# 2.8.0 (2017-02-03)
+* Fixing AOT
+* Fixing Core-JS
+* Fixing drag on firefox
+* Fixing getNodeByPath with custom idField
+* Fixing Universal by calling invokeMethod
+* Fixing TS errors by not setting an existing method
+
 <a name="2.7.0"></a>
 # 2.7.0 (2017-01-05)
 * Promise based expand
